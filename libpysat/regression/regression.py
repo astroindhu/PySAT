@@ -50,8 +50,24 @@ class regression:
         if self.method[i] == 'LASSO':
             # create a temporary set of parameters
             params_temp = copy.copy(params[i])
+<<<<<<< HEAD
 
             self.model = linear.Lasso(**params_temp)
+=======
+            # check whether to do CV or not
+            try:
+                self.do_cv = params[i]['CV']
+                # Remove CV parameter
+                params_temp.pop('CV')
+            except:
+                self.do_cv = False
+
+            if self.do_cv is False:
+                self.model = linear.Lasso(**params_temp)
+            else:
+                params_temp.pop('alpha')
+                self.model = linear.LassoCV(**params_temp)
+>>>>>>> 2aa1ea96920daf11300bb583ea79d091ff145e3a
 
         if self.method[i] == 'Elastic Net':
             params_temp = copy.copy(params[i])
@@ -131,7 +147,6 @@ class regression:
     def predict(self, x, i=0):
         if self.method[i] == 'GP':
             x = self.do_reduce_dim.transform(x)
-        print(len(x))
         return self.model.predict(x)
 
 

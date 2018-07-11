@@ -1,7 +1,11 @@
 branches:
   only:
   - master
+<<<<<<< HEAD
 
+=======
+  - dev
+>>>>>>> 2aa1ea96920daf11300bb583ea79d091ff145e3a
 version: '0.1.0.{build}'
 
 environment:
@@ -25,7 +29,11 @@ install:
   - cmd: conda create -q -n test_env python=%PYTHON_VERSION%
   - cmd: activate test_env
   - cmd: conda config --add channels conda-forge
+<<<<<<< HEAD
   - cmd: conda install -c conda-forge numpy scipy pandas gdal scikit-learn multipledispatch
+=======
+  - cmd: conda install -c conda-forge numpy scipy pandas gdal scikit-learn multipledispatch pvl
+>>>>>>> 2aa1ea96920daf11300bb583ea79d091ff145e3a
   - cmd: conda install -c usgs-astrogeology plio
   - cmd: conda install pytest-cov
   # https://pythonhosted.org/CodeChat/appveyor.yml.html
@@ -35,6 +43,7 @@ install:
 build_script:
   - cmd: python setup.py install
   
+<<<<<<< HEAD
 #test_script:
 #  - cmd: pytest libpysat/
 
@@ -42,3 +51,12 @@ on_success:
   - cmd: deactivate
 #  - cmd: conda config --set anaconda_upload yes
 #  - cmd: conda build --token %CONDA_UPLOAD_TOKEN% --channel conda-forge --channel usgs-astrogeology .
+=======
+test_script:
+  - cmd: pytest libpysat/
+
+on_success:
+  - cmd: deactivate
+  - cmd: conda config --set anaconda_upload yes
+  - cmd: conda build --token %CONDA_UPLOAD_TOKEN% --channel conda-forge --channel usgs-astrogeology .
+>>>>>>> 2aa1ea96920daf11300bb583ea79d091ff145e3a

@@ -34,8 +34,13 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
+<<<<<<< HEAD
     packages=find_packages(exclude=['tests']),
     install_requires=['numpy', 'pandas', 'scipy'],
+=======
+    packages=find_packages(),
+    install_requires=['numpy', 'pandas', 'scipy', 'gdal', 'plio'],
+>>>>>>> 2aa1ea96920daf11300bb583ea79d091ff145e3a
     extras_require={
         'dev': [],
         'test': ['coverage', 'pytest-cov', 'coveralls'],

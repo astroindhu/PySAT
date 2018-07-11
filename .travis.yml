@@ -27,21 +27,24 @@ before_install:
   - conda update -q conda
   - conda info -a   # Useful for debugging any issues with conda
   # Create the env
-  - conda create -q -n test python=$PYTHON_VERSION
-  - source activate test
+  - conda create -q -n test_env python=$PYTHON_VERSION
+  - source activate test_env
 
 install:
   # Install dependencies
   - conda config --add channels usgs-astrogeology
   - conda config --add channels conda-forge
-  - conda install -c conda-forge numpy scipy pandas gdal scikit-learn
-  - conda install -c usgs-astrogeology plio
+  - conda install --quiet -c conda-forge numpy scipy pandas gdal libgdal scikit-learn multipledispatch
+  - conda install --quiet -c usgs-astrogeology plio
+  # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/2990
+  - conda install pip setuptools
 
   # Development installation
-  - conda install pytest pytest-cov
-  - pip install coveralls
+  - conda install --quiet pytest pytest-cov nbsphinx
+  - pip install coveralls travis-sphinx
 
 script:
+<<<<<<< HEAD
   - python setup.py install
 #  - pytest --cov=libpysat
 
@@ -58,3 +61,19 @@ deploy:
   distributions: sdist bdist_wheel
   on:
     branch: master
+=======
+  - pytest --cov=pysat
+
+after_success:
+  # Code Coverage
+  - coveralls
+  # Anaconda Upload
+  - source deactivate
+  - conda install conda-build anaconda-client
+  - conda config --set anaconda_upload yes
+  - conda build --token $CONDA_UPLOAD_TOKEN --python $PYTHON_VERSION .
+  # Docs to gh-pages
+  - source activate test_env  # Reactivate the env to have all deps installed.
+  - travis-sphinx build --source=docs --nowarn # The sphinx build script
+  - travis-sphinx deploy --branches=dev
+>>>>>>> 2aa1ea96920daf11300bb583ea79d091ff145e3a
